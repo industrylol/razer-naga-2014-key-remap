@@ -1,10 +1,8 @@
-use uinput::{Error, Device};
 use uinput::event::Keyboard::All;
-use uinput;
+use uinput::{Device, Error};
 
 pub fn create() -> Result<Device, String> {
-    create_device()
-        .map_err(|e| format!("{}", e))
+    create_device().map_err(|e| format!("{}", e))
 }
 
 fn create_device() -> Result<Device, Error> {

@@ -1,5 +1,5 @@
-use evdev_rs::{BLOCKING, Device, GrabMode, InputEvent, NORMAL, ReadStatus};
-use std::fs::{File, read_dir};
+use evdev_rs::{Device, GrabMode, InputEvent, ReadStatus, BLOCKING, NORMAL};
+use std::fs::{read_dir, File};
 
 pub struct Naga {
     device: Device,
@@ -15,33 +15,45 @@ impl Naga {
         for path_result in paths {
             let path = match path_result {
                 Ok(p) => p,
-                Err(_) => { continue; }
+                Err(_) => {
+                    continue;
+                }
             };
 
             let file = match File::open(path.path()) {
                 Ok(f) => f,
-                Err(_) => { continue; }
+                Err(_) => {
+                    continue;
+                }
             };
 
             let mut device = match Device::new_from_fd(&file) {
                 Ok(d) => d,
-                Err(_) => { continue; }
+                Err(_) => {
+                    continue;
+                }
             };
 
             if device.name().unwrap_or("").eq("Razer Razer Naga 2014")
-                && device.phys().unwrap_or("").ends_with("/input2") {
-                device.grab(GrabMode::Grab).map_err(|e| format!("Could not grab device: {}", e))?;
-                return Ok(Naga { device, _file: file });
+                && device.phys().unwrap_or("").ends_with("/input2")
+            {
+                device
+                    .grab(GrabMode::Grab)
+                    .map_err(|e| format!("Could not grab device: {}", e))?;
+                return Ok(Naga {
+                    device,
+                    _file: file,
+                });
             }
         }
 
-        return Err("No device found".to_string());
+        Err("No device found".to_string())
     }
 
     pub fn next_event(&self) -> Result<(ReadStatus, InputEvent), String> {
         match self.device.next_event(NORMAL | BLOCKING) {
             Ok(res) => Ok(res),
-            Err(errno) => Err(format!("Problem reading event: {}", errno))
+            Err(errno) => Err(format!("Problem reading event: {}", errno)),
         }
     }
 }

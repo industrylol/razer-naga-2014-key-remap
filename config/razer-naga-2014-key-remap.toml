@@ -16,6 +16,15 @@
 # NumLock, LineFeed, ScrollUp, ScrollDown,
 # F13, F14, F15, F16, F17, F18, F19, F20, F21, F22, F23, F24
 
+# Override to force keypad by prefixing with `KP::`
+# KP::Slash, KP::Asterisk
+# KP::_7, KP::_8, KP::_9, KP::Minus
+# KP::_4, KP::_5, KP::_6, KP::Plus
+# KP::_1, KP::_2, KP::_3, KP::Enter
+# KP::_0, KP::Dot
+# KP::AltComma, KP::Equal, KP::PlusMinus
+# KP::Comma, KP::LeftParen, KP::RightParen
+
 [keys]
 1 = 'F1'
 2 = 'F2'
@@ -28,4 +37,4 @@
 9 = 'F9'
 10 = 'F10'
 11 = 'F11'
-12 = 'F12'
+12 = 'KP::Plus'
